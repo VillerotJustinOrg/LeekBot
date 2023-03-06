@@ -20,7 +20,7 @@
       <x>490</x>
       <y>180</y>
       <width>301</width>
-      <height>151</height>
+      <height>181</height>
      </rect>
     </property>
     <property name="title">
@@ -43,6 +43,9 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit"/>
+      </item>
      </layout>
     </widget>
     <widget class="QWidget" name="horizontalLayoutWidget_2">
@@ -62,7 +65,23 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_2"/>
+      </item>
      </layout>
+    </widget>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>9</x>
+       <y>150</y>
+       <width>281</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Log In</string>
+     </property>
     </widget>
    </widget>
   </widget>

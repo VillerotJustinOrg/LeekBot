@@ -2,20 +2,25 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
+#include "secdialog.h"
+namespace Ui {
+class MainWindow;
+}
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+private slots:
+    void on_pushButton_Login_clicked();
 
 private:
     Ui::MainWindow *ui;
+    SecDialog *secDialog;
 };
+
 #endif // MAINWINDOW_H

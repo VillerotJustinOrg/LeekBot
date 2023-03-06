@@ -12,7 +12,7 @@ class SecDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit SecDialog(QWidget *parent = nullptr);
+    explicit SecDialog(QWidget *parent = 0);
     ~SecDialog();
 
 private:
