@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/resources">
         <file>images/leekwars.svg</file>
+        <file>images/Crystals.png</file>
+        <file>images/hab.png</file>
     </qresource>
 </RCC>

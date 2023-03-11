@@ -90,7 +90,7 @@ void ConnectionWindow::fin(QNetworkReply *rep)
         hide();
         mainwindow = new MainWindow(this);
         mainwindow->show();
-        mainwindow->userdata = QJsonDocument::fromJson(json);
+        mainwindow->userdata = QJsonDocument::fromJson(json).object().find("farmer")->toObject();
         mainwindow->userToken = temp;
         mainwindow->updateView();
     }

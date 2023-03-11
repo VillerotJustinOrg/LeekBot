@@ -5,6 +5,7 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 #include <QUrl>
+#include <QUrlQuery>
 #include <QDialog>
 #include <QJsonDocument>
 #include <QJsonParseError>
@@ -28,11 +29,15 @@ private slots:
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    QJsonDocument userdata;
+    QJsonObject userdata;
     QString userToken;
 
 private:
     Ui::MainWindow *ui;
+    qint64 userId;
+    qint64 teamID;
+    QJsonObject *team;
+    QNetworkAccessManager *manager;
 };
 
 #endif // MAINWINDOW_H
