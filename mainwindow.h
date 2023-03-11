@@ -6,6 +6,11 @@
 #include <QtNetwork/QNetworkRequest>
 #include <QUrl>
 #include <QDialog>
+#include <QJsonDocument>
+#include <QJsonParseError>
+#include <QJsonObject>
+#include <QJsonValue>
+#include <QJsonArray>
 
 namespace Ui {
 class MainWindow;
@@ -23,7 +28,7 @@ private slots:
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    QString userdata;
+    QJsonDocument userdata;
     QString userToken;
 
 private:

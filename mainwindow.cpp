@@ -6,6 +6,11 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 #include <QUrl>
+#include <QJsonDocument>
+#include <QJsonParseError>
+#include <QJsonObject>
+#include <QJsonValue>
+#include <QJsonArray>
 
 MainWindow::MainWindow(QWidget *parent) :
     QDialog(parent),
@@ -23,5 +28,5 @@ MainWindow::~MainWindow()
 
 void MainWindow:: updateView() {
     ui->label->setText(this->userToken);
-    ui->label_2->setText(this->userdata);
+    ui->label_2->setText(this->userdata.toJson());
 }

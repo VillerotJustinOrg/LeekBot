@@ -8,6 +8,11 @@
 #include <QtNetwork/QNetworkCookieJar>
 #include <QtNetwork/QNetworkCookie>
 #include <QUrl>
+#include <QJsonDocument>
+#include <QJsonParseError>
+#include <QJsonObject>
+#include <QJsonValue>
+#include <QJsonArray>
 
 
 ConnectionWindow::ConnectionWindow(QWidget *parent) :
@@ -56,8 +61,7 @@ void ConnectionWindow::fin(QNetworkReply *rep)
     rep->deleteLater();
 
     // get Json
-    QByteArray bts = rep->readAll();
-    QString str(bts);
+    QByteArray json = rep->readAll();
 
     // get Cookies
     QList<QNetworkCookie> cookies = qvariant_cast<QList<QNetworkCookie>>(rep->header(QNetworkRequest::SetCookieHeader));
@@ -75,7 +79,7 @@ void ConnectionWindow::fin(QNetworkReply *rep)
     // Show result
 
     bool request_result = false;
-    if(str != "{\"error\":\"invalid\"}") {
+    if(json != "{\"error\":\"invalid\"}") {
         request_result = true;
     }
     //QMessageBox::information(this, "Fin de post", "L'envoi de données par POST a été effectué avec succès ! Result; <br /><em>" + str + "</em>");
@@ -86,7 +90,7 @@ void ConnectionWindow::fin(QNetworkReply *rep)
         hide();
         mainwindow = new MainWindow(this);
         mainwindow->show();
-        mainwindow->userdata = str;
+        mainwindow->userdata = QJsonDocument::fromJson(json);
         mainwindow->userToken = temp;
         mainwindow->updateView();
     }
