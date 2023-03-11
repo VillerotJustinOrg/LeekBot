@@ -27,6 +27,8 @@ private slots:
 private:
     Ui::ConnectionWindow *ui;
     MainWindow *mainwindow;
+    QNetworkAccessManager *manager;
+    QUrl url;
 };
 
 #endif // CONNECTIONWINDOW_H
