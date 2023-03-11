@@ -9,17 +9,17 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    connectionwindow.cpp \
     main.cpp \
-    mainwindow.cpp \
-    secdialog.cpp
+    mainwindow.cpp
 
 HEADERS += \
-    mainwindow.h \
-    secdialog.h
+    connectionwindow.h \
+    mainwindow.h
 
 FORMS += \
-    mainwindow.ui \
-    secdialog.ui
+    connectionwindow.ui \
+    mainwindow.ui
 
 CONFIG += lrelease
 CONFIG += embed_translations

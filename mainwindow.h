@@ -5,31 +5,29 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 #include <QUrl>
-#include <QMainWindow>
-#include "secdialog.h"
+#include <QDialog>
+
 namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
+class MainWindow : public QDialog
 {
     Q_OBJECT
+public slots:
+    void updateView();
+
+private slots:
+
 
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void TestConnection() const;
-    static void ReplyFinished(QNetworkReply *reply);
-    QNetworkAccessManager *manager;
-
-private slots:
-    void on_pushButton_Login_clicked();
-    void fin(QNetworkReply*);
-    void messageErreur(QNetworkReply::NetworkError);
+    QString userdata;
+    QString userToken;
 
 private:
     Ui::MainWindow *ui;
-    SecDialog *secDialog;
 };
 
 #endif // MAINWINDOW_H
