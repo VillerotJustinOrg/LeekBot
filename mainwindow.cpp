@@ -449,6 +449,7 @@ void MainWindow:: on_pushButton_Fight_Leek_clicked() {
    //qInfo() << LeekId;
 
     for (int i = 0; i < numberOfFight; ++i) {
+        qInfo() << "Fight Begin";
         // get Opponents https://leekwars.com/api/garden/get-leek-opponents/46920
         QEventLoop eventLoop;
         QObject::connect(QNAMwrapper::getQNAM(), SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
@@ -475,26 +476,39 @@ void MainWindow:: on_pushButton_Fight_Leek_clicked() {
         // Fight https://leekwars.com/api/garden/start-solo-fight
 
         url = QUrl("https://leekwars.com/api/garden/start-solo-fight");
-        //qInfo() << url;
+        qInfo() << url;
         request = QNetworkRequest(QUrl(url));
-        request.setRawHeader("content-type", "application/x-www-form-urlencoded; charset=UTF-8");               // set Header
+        // set Header
+        request.setRawHeader("content-type", "application/x-www-form-urlencoded; charset=UTF-8");
+        request.setRawHeader("user-agent", "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0");
+        request.setRawHeader("chost", "leekwars.com");
+        request.setRawHeader("accept", "*/*");
+        request.setRawHeader("origin", "https://leekwars.com");
+        request.setRawHeader("sec-fetch-dest", "empty");
+        request.setRawHeader("sec-fetch-mode", "cors");
+        request.setRawHeader("sec-fetch-site", "same-origin");
+        //request.setRawHeader("referer", "https://leekwars.com/api/garden/start-solo-fight");
+
         QString data = "leek_id=" + QString::number(LeekId) + "&target_id=" + QString::number(OpponentId);      // set Data
+        qInfo() << "before request post";
         rep = QNAMwrapper::getQNAM()->post(request, data.toLatin1());
         eventLoop.exec();
-
+        qInfo() << "after request post";
         // Result
 
         QByteArray jsonFight = rep->readAll();
+        qInfo() << jsonFight;
         int fightId = QJsonDocument::fromJson(jsonFight).object().find("fight")->toInt();
         qInfo() << fightId;
 
+        // Show Result in other window
 
-        // Update page
 
-        this->updateView();
+        qInfo() << "Fight Stop";
     }
+    // Update page
+    this->updateView();
 
-    // Show Result in other window
 }
 
 void MainWindow:: on_pushButton_All_Farmer_clicked() {
