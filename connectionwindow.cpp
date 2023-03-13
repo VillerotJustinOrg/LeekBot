@@ -2,6 +2,7 @@
 #include "ui_connectionwindow.h"
 #include <QMessageBox>
 #include <QPixmap>
+#include <qnamwrapper.h>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
@@ -41,41 +42,29 @@ void ConnectionWindow::on_pushButton_Login_clicked()
     QString username = ui->lineEdit_username->text();
     QString password = ui->lineEdit_password->text();
 
+    if (username.isEmpty()) {
+        username = "Juju2639";
+        password = "Naxu7582?";
+    }
+
     // Request
     url = QUrl("https://leekwars.com/api/farmer/login");                                        // set url
     QNetworkRequest request(url);                                                               // On crée notre requête
     QString donnees = "login=" + username + "&password=" + password + "&keep_connected=true";   // set Data
     request.setRawHeader("content-type", "application/x-www-form-urlencoded; charset=UTF-8");   // set Header
-    manager = new QNetworkAccessManager(this);               // Network Manager
-    manager->setCookieJar(new QNetworkCookieJar);
+    QNetworkReply *rep = QNAMwrapper::getQNAM()->post(request, donnees.toLatin1()); // post Request
 
-    // do things depending request result
-    connect(manager, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(messageErreur(QNetworkReply::NetworkError)));
-    connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(fin(QNetworkReply*)));
 
-    manager->post(request, donnees.toLatin1()); // post Request
-}
+    // Event Loop
+    QEventLoop eventLoop;
+    connect(QNAMwrapper::getQNAM(), SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(messageErreur(QNetworkReply::NetworkError)));
+    QObject::connect(QNAMwrapper::getQNAM(), SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
+    eventLoop.exec();
 
-void ConnectionWindow::fin(QNetworkReply *rep)
-{
-    rep->deleteLater();
 
     // get Json
     QByteArray json = rep->readAll();
-
-    // get Cookies
-    QList<QNetworkCookie> cookies = qvariant_cast<QList<QNetworkCookie>>(rep->header(QNetworkRequest::SetCookieHeader));
-    QString temp("");
-    if(cookies.count() != 0){
-        //you must tell which cookie goes with which url
-        //manager->cookieJar()->cookiesForUrl(url);
-        foreach (QNetworkCookie cooki, cookies) {
-            if (cooki.name() == "token" && cooki.value() != "deleted"){
-                temp = temp + " " + cooki.value();
-            }
-        }
-    }
-
+    rep->deleteLater();
     // Show result
 
     bool request_result = false;
@@ -91,12 +80,13 @@ void ConnectionWindow::fin(QNetworkReply *rep)
         mainwindow = new MainWindow(this);
         mainwindow->show();
         mainwindow->userdata = QJsonDocument::fromJson(json).object().find("farmer")->toObject();
-        mainwindow->userToken = temp;
-        mainwindow->updateView();
+        mainwindow->SetData();
     }
     else {
         QMessageBox::warning(this,"Login", "Username and password is not correct");
     }
+
+
 }
 
 void ConnectionWindow::messageErreur(QNetworkReply::NetworkError)

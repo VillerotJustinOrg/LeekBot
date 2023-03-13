@@ -1,12 +1,14 @@
 #ifndef CONNECTIONWINDOW_H
 #define CONNECTIONWINDOW_H
 
+
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 #include <QUrl>
 #include <QMainWindow>
 #include "mainwindow.h"
+
 namespace Ui {
 class ConnectionWindow;
 }
@@ -20,14 +22,13 @@ public:
     ~ConnectionWindow();
 
 private slots:
+    //      pushButton_Login
     void on_pushButton_Login_clicked();
-    void fin(QNetworkReply*);
     void messageErreur(QNetworkReply::NetworkError);
 
 private:
     Ui::ConnectionWindow *ui;
     MainWindow *mainwindow;
-    QNetworkAccessManager *manager;
     QUrl url;
 };
 

@@ -11,11 +11,13 @@ CONFIG += c++17
 SOURCES += \
     connectionwindow.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    qnamwrapper.cpp
 
 HEADERS += \
     connectionwindow.h \
-    mainwindow.h
+    mainwindow.h \
+    qnamwrapper.h
 
 FORMS += \
     connectionwindow.ui \
