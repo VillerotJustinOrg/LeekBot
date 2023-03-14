@@ -404,7 +404,7 @@
        </font>
       </property>
       <property name="text">
-       <string>LeekName</string>
+       <string/>
       </property>
      </widget>
     </item>
@@ -616,7 +616,7 @@
        </font>
       </property>
       <property name="text">
-       <string>LeekName</string>
+       <string/>
       </property>
      </widget>
     </item>
@@ -642,7 +642,7 @@
        </font>
       </property>
       <property name="text">
-       <string>LeekName</string>
+       <string/>
       </property>
      </widget>
     </item>
@@ -667,7 +667,7 @@
        </font>
       </property>
       <property name="text">
-       <string>100</string>
+       <string/>
       </property>
      </widget>
     </item>
@@ -692,7 +692,7 @@
        </font>
       </property>
       <property name="text">
-       <string>100</string>
+       <string/>
       </property>
      </widget>
     </item>
@@ -717,7 +717,7 @@
        </font>
       </property>
       <property name="text">
-       <string>100</string>
+       <string/>
       </property>
      </widget>
     </item>
@@ -742,7 +742,7 @@
        </font>
       </property>
       <property name="text">
-       <string>100</string>
+       <string/>
       </property>
      </widget>
     </item>
@@ -767,7 +767,7 @@
        </font>
       </property>
       <property name="text">
-       <string>100</string>
+       <string/>
       </property>
      </widget>
     </item>
@@ -792,7 +792,7 @@
        </font>
       </property>
       <property name="text">
-       <string>100</string>
+       <string/>
       </property>
      </widget>
     </item>
@@ -810,8 +810,11 @@
    <layout class="QHBoxLayout" name="horizontalLayout_17">
     <item>
      <widget class="QProgressBar" name="XP_progressBar_Leek_2">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="value">
-       <number>24</number>
+       <number>0</number>
       </property>
      </widget>
     </item>
@@ -829,8 +832,11 @@
    <layout class="QHBoxLayout" name="horizontalLayout_18">
     <item>
      <widget class="QProgressBar" name="XP_progressBar_Leek_3">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="value">
-       <number>24</number>
+       <number>0</number>
       </property>
      </widget>
     </item>
@@ -848,8 +854,11 @@
    <layout class="QHBoxLayout" name="horizontalLayout_19">
     <item>
      <widget class="QProgressBar" name="XP_progressBar_Leek_4">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="value">
-       <number>24</number>
+       <number>0</number>
       </property>
      </widget>
     </item>
@@ -874,7 +883,7 @@
        </font>
       </property>
       <property name="text">
-       <string>100</string>
+       <string/>
       </property>
      </widget>
     </item>
@@ -899,7 +908,7 @@
        </font>
       </property>
       <property name="text">
-       <string>100</string>
+       <string/>
       </property>
      </widget>
     </item>
@@ -925,7 +934,7 @@
        </font>
       </property>
       <property name="text">
-       <string>LeekName</string>
+       <string/>
       </property>
      </widget>
     </item>
@@ -943,8 +952,11 @@
    <layout class="QHBoxLayout" name="horizontalLayout_20">
     <item>
      <widget class="QProgressBar" name="XP_progressBar_Leek">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="value">
-       <number>24</number>
+       <number>0</number>
       </property>
      </widget>
     </item>

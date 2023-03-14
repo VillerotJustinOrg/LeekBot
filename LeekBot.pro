@@ -10,17 +10,23 @@ CONFIG += c++17
 
 SOURCES += \
     connectionwindow.cpp \
+    detailedfight.cpp \
+    fightlist.cpp \
     main.cpp \
     mainwindow.cpp \
     qnamwrapper.cpp
 
 HEADERS += \
     connectionwindow.h \
+    detailedfight.h \
+    fightlist.h \
     mainwindow.h \
     qnamwrapper.h
 
 FORMS += \
     connectionwindow.ui \
+    detailedfight.ui \
+    fightlist.ui \
     mainwindow.ui
 
 CONFIG += lrelease
