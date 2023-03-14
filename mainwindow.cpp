@@ -228,11 +228,30 @@ void MainWindow:: SetData() {
         }
         ct = ct+1;
     }
-   //qInfo() << "Update View - Leek";
+    //qInfo() << "Update View - Leek";
 
     // Team ComboBox
 
-   //qInfo() << "Update View - Form2";
+    qInfo() << "Update View - Team Combobox";
+
+    url = QUrl("https://leekwars.com/api/garden/get");
+    QNetworkRequest requestCompo(url);
+    QNetworkReply *repCompo = QNAMwrapper::getQNAM()->get(requestCompo);
+    eventLoop.exec();
+    QByteArray jsonCompo = repCompo->readAll();
+    qInfo() << jsonCompo;
+    qInfo() << "Update View - Team Combobox - request done";
+    QJsonArray compos = QJsonDocument::fromJson(jsonCompo).object().find("garden")->toObject().find("my_compositions")->toArray();
+    qInfo() << compos;
+    qInfo() << "Update View - Team Combobox - array done";
+    foreach (QJsonValueConstRef compo, compos) {
+        qInfo() << compo;
+        ui->comboBox_Fight_Team->addItem(compo.toObject().find("name").value().toString()+" ("+QString::number(compo.toObject().find("fights").value().toInt())+")");
+        this->CompoIdList.append(compo.toObject().find("id").value().toInt());
+        //fights talent
+    }
+
+    qInfo() << "Update View - Form2";
 }
 
 //==========================================================================================================
@@ -436,6 +455,33 @@ void MainWindow:: updateView() {
 
     //qInfo() << "Leek Finished";
 
+    ui->comboBox_Fight_Team->clear();
+
+    // Team ComboBox
+
+    qInfo() << "Update View - Team Combobox";
+
+    url = QUrl("https://leekwars.com/api/garden/get");
+    QNetworkRequest requestCompo(url);
+    QNetworkReply *repCompo = QNAMwrapper::getQNAM()->get(requestCompo);
+    eventLoop.exec();
+    QByteArray jsonCompo = repCompo->readAll();
+    if (jsonCompo.isEmpty()  || jsonCompo == "Too Many Requests") {
+        QMessageBox::information(this, "UserData", "Error - Not found");
+        return;
+    }
+    qInfo() << "Update View - Team Combobox - request done";
+    QJsonArray compos = QJsonDocument::fromJson(jsonCompo).object().find("garden")->toObject().find("my_compositions")->toArray();
+    qInfo() << compos;
+    qInfo() << "Update View - Team Combobox - array done";
+    foreach (QJsonValueConstRef compo, compos) {
+        qInfo() << compo;
+        ui->comboBox_Fight_Team->addItem(compo.toObject().find("name").value().toString()+" ("+QString::number(compo.toObject().find("fights").value().toInt())+")");
+        //fights talent
+    }
+
+    qInfo() << "Update View - Form2";
+
 
 }
 
@@ -536,14 +582,15 @@ void MainWindow:: on_pushButton_Fight_Leek_clicked() {
     // Update page
     this->updateView();
 
+
     // Show Result in other window
-    FightList *fightlist = new FightList(this);
-    fightlist->fightList=fights;
-    fightlist->show();
-    fightlist->SetData();
+    if (fights.size() > 0) {
 
-
-
+        FightList *fightlist = new FightList(this);
+        fightlist->fightList=fights;
+        fightlist->show();
+        fightlist->SetData();
+    }
 
 }
 
@@ -618,16 +665,18 @@ void MainWindow:: on_pushButton_Fight_Farmer_clicked() {
     }
 
     // Show Result in other window
-    FightList *fightlist = new FightList(this);
-    fightlist->fightList=fights;
-    fightlist->show();
-    fightlist->SetData();
+    if (fights.size() > 0) {
+
+        FightList *fightlist = new FightList(this);
+        fightlist->fightList=fights;
+        fightlist->show();
+        fightlist->SetData();
+    }
 
     // Update page
     this->updateView();
 
 }
-
 
 
 void MainWindow:: on_pushButton_Fight_Team_clicked() {
@@ -644,7 +693,9 @@ void MainWindow:: on_pushButton_Fight_Team_clicked() {
 
     //qInfo() << numberOfFight;
 
-    int TeamId = this->teams.at(selectedTeam);
+    int TeamId = this->CompoIdList.at(selectedTeam);
+
+    QList<int> fights;
 
 
     for (int i = 0; i < numberOfFight; ++i) {
@@ -698,19 +749,32 @@ void MainWindow:: on_pushButton_Fight_Team_clicked() {
         //qInfo() << jsonFight;
         int fightId = QJsonDocument::fromJson(jsonFight).object().find("fight")->toInt();
         //qInfo() << fightId;
-        // Show Result in other window
+        fights.append(fightId);
 
-        //qInfo() << "Fight Stop";
+        qInfo() << "Fight Stop";
     }
+
 
     // Update page
     this->updateView();
+
+    qInfo() << "Update Done";
+    // Show Result in other window
+    if (fights.size() > 0) {
+
+        FightList *fightlist = new FightList(this);
+        fightlist->fightList=fights;
+        fightlist->show();
+        fightlist->SetData();
+    }
+
+
 }
 
 void MainWindow:: on_pushButton_All_Farmer_clicked() {
    //qInfo() << "All Farmer";
 
-    if (ui->comboBox_Fight_Leek->count() < 2){
+    if (this->leek2->empty()){
         QMessageBox::information(this, "Sorry", "You need at least 2 leek");
         return;
     }
@@ -776,10 +840,13 @@ void MainWindow:: on_pushButton_All_Farmer_clicked() {
    }
 
    // Show Result in other window
-   FightList *fightlist = new FightList(this);
-   fightlist->fightList=fights;
-   fightlist->show();
-   fightlist->SetData();
+   if (fights.size() > 0) {
+
+       FightList *fightlist = new FightList(this);
+       fightlist->fightList=fights;
+       fightlist->show();
+       fightlist->SetData();
+   }
 
    // Update page
    this->updateView();
@@ -787,5 +854,100 @@ void MainWindow:: on_pushButton_All_Farmer_clicked() {
 }
 
 void MainWindow:: on_pushButton_All_Team_clicked() {
-   //qInfo() << "All Team";
+    qInfo() << "All Team";
+
+    QList<int> fights;
+
+
+    QEventLoop eventLoop;
+    QObject::connect(QNAMwrapper::getQNAM(), SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
+    QUrl url = QUrl("https://leekwars.com/api/garden/get");
+    QNetworkRequest requestCompo(url);
+    qInfo() << "Get - Compo - URL";
+    QNetworkReply *repCompo = QNAMwrapper::getQNAM()->get(requestCompo);
+    eventLoop.exec();
+    qInfo() << "Get - Compo - request";
+    QByteArray jsonCompo = repCompo->readAll();
+    qInfo() << jsonCompo;
+    qInfo() << "Get - Compo - request done";
+    QJsonArray compos = QJsonDocument::fromJson(jsonCompo).object().find("garden")->toObject().find("my_compositions")->toArray();
+    qInfo() << compos;
+    qInfo() << "Get - Compo - array done";
+    foreach (QJsonValueConstRef compo, compos) {
+        qInfo() << compo;
+        int numberFight = compo.toObject().find("fights").value().toInt();
+        int id = compo.toObject().find("id").value().toInt();
+
+        for (int i = 0; i < numberFight; ++i) {
+            QEventLoop eventLoop;
+            QObject::connect(QNAMwrapper::getQNAM(), SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
+            QUrl url = QUrl("https://leekwars.com/api/garden/get-composition-opponents/"+QString::number(id));
+            //qInfo() << url;
+            QNetworkRequest request = QNetworkRequest(QUrl(url));
+            QNetworkReply *rep = QNAMwrapper::getQNAM()->get(request);
+            eventLoop.exec();
+            QByteArray jsonOpponent = rep->readAll();
+            if (jsonOpponent == "Too Many Requests") {
+                QMessageBox::information(this, "Get Opponnent", "Too Many Requests");
+                return;
+            }
+            //qInfo() << jsonOpponent;
+            // get first opponent
+            QJsonArray opponents = QJsonDocument::fromJson(jsonOpponent).object().find(QJsonDocument::fromJson(jsonOpponent).object().keys().at(0))->toArray();
+
+            //qInfo() << opponents;
+            //qInfo() << opponents.at(0);
+            // Get first Opponent If
+            QJsonObject opponent = opponents[0].toObject();
+            //qInfo() << "first op";
+            int OpponentId = opponent.find("id")->toInt();
+            qInfo() << "OP ID: " + QString::number(OpponentId);
+
+            // Fight https://leekwars.com/api/garden/start-farmer-fight
+            url = QUrl("https://leekwars.com/api/garden/start-team-fight");
+            qInfo() << url;
+            request = QNetworkRequest(QUrl(url));
+            // set Header
+            request.setRawHeader("content-type", "application/x-www-form-urlencoded; charset=UTF-8");
+            request.setRawHeader("user-agent", "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0");
+            request.setRawHeader("chost", "leekwars.com");
+            request.setRawHeader("accept", "*/*");
+            request.setRawHeader("origin", "https://leekwars.com");
+            request.setRawHeader("sec-fetch-dest", "empty");
+            request.setRawHeader("sec-fetch-mode", "cors");
+            request.setRawHeader("sec-fetch-site", "same-origin");
+            //request.setRawHeader("referer", "https://leekwars.com/api/garden/start-solo-fight");
+            QString data = "composition_id="+QString::number(id)+"&target_id=" + QString::number(OpponentId);      // set Data
+            qInfo() << "before request post";
+            rep = QNAMwrapper::getQNAM()->post(request, data.toLatin1());
+            eventLoop.exec();
+            qInfo() << "after request post";
+            // Result
+            QByteArray jsonFight = rep->readAll();
+            if (jsonFight == "Too Many Requests") {
+                QMessageBox::information(this, "Fight Post", "Too Many Requests");
+                return;
+            }
+            qInfo() << jsonFight;
+            int fightId = QJsonDocument::fromJson(jsonFight).object().find("fight")->toInt();
+            qInfo() << fightId;
+            fights.append(fightId);
+
+            qInfo() << "Fight Stop";
+
+
+        }
+    }
+
+    // Update page
+    this->updateView();
+
+    // Show Result in other window
+    if (fights.size() > 0) {
+
+        FightList *fightlist = new FightList(this);
+        fightlist->fightList=fights;
+        fightlist->show();
+        fightlist->SetData();
+    }
 }

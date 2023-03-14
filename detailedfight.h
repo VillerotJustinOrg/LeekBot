@@ -14,9 +14,12 @@ class DetailedFight : public QDialog
 public:
     explicit DetailedFight(QWidget *parent = nullptr);
     ~DetailedFight();
+    QString fightId;
 
 private:
     Ui::DetailedFight *ui;
+public slots:
+    void SetData();
 };
 
 #endif // DETAILEDFIGHT_H

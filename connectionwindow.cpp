@@ -24,6 +24,7 @@ ConnectionWindow::ConnectionWindow(QWidget *parent) :
     // UI Stuff
     ui->setupUi(this);
     setWindowTitle("LeekBot");
+    this->setFixedSize(this->size());
     QPixmap pix(":/resources/images/leekwars.svg");
     int w = ui->label_pic->width();
     int h = ui->label_pic->height();

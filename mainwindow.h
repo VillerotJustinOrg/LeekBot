@@ -46,7 +46,7 @@ private:
     QJsonObject *leek2;
     QJsonObject *leek3;
     QJsonObject *leek4;
-    QList<int> teams;
+    QList<int> CompoIdList;
     int NBLeek;
 };
 

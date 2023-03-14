@@ -1,4 +1,5 @@
 #include "fightlist.h"
+#include "detailedfight.h"
 #include "ui_fightlist.h"
 
 
@@ -14,6 +15,7 @@ FightList::FightList(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle("Fights");
+    this->setFixedSize(this->size());
 }
 
 FightList::~FightList()
@@ -65,5 +67,10 @@ void FightList:: CreateItem (QListWidget * TheList , QString& TheText)
 void FightList:: fightDetail(QString idFight) {
     qInfo() << "More Info";
     qInfo() << idFight;
+
+    DetailedFight *detail = new DetailedFight(this);
+    detail->fightId=idFight;
+    detail->show();
+    detail->SetData();
 }
 
