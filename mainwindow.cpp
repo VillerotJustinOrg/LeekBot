@@ -689,7 +689,67 @@ void MainWindow:: on_pushButton_Fight_Team_clicked() {
 }
 
 void MainWindow:: on_pushButton_All_Farmer_clicked() {
-   //qInfo() << "All Farmer";
+   qInfo() << "All Farmer";
+
+   for (int i = 0; i < this->userdata.find("fights").value().toInt(); ++i) {
+       qInfo() << "Fight Begin";
+
+       // get Opponents https://leekwars.com/api/garden/get-farmer-opponents
+       QEventLoop eventLoop;
+       QObject::connect(QNAMwrapper::getQNAM(), SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
+       QUrl url = QUrl("https://leekwars.com/api/garden/get-farmer-opponents");
+       qInfo() << url;
+       QNetworkRequest request = QNetworkRequest(QUrl(url));
+       QNetworkReply *rep = QNAMwrapper::getQNAM()->get(request);
+       eventLoop.exec();
+       QByteArray jsonOpponent = rep->readAll();
+       qInfo() << jsonOpponent;
+       // get first opponent
+       QJsonArray opponents = QJsonDocument::fromJson(jsonOpponent).object().find(QJsonDocument::fromJson(jsonOpponent).object().keys().at(0))->toArray();
+         if (opponents.empty() || jsonOpponent == "Too Many Requests") {
+           QMessageBox::information(this, "Fight", "Error");
+           return;
+       }
+       qInfo() << opponents;
+       qInfo() << opponents.at(0);
+       // Get first Opponent If
+       QJsonObject opponent = opponents[0].toObject();
+       qInfo() << "first op";
+       int OpponentId = opponent.find("id")->toInt();
+       qInfo() << "OP ID: " + QString::number(OpponentId);
+
+       // Fight https://leekwars.com/api/garden/start-farmer-fight
+       url = QUrl("https://leekwars.com/api/garden/start-farmer-fight");
+       qInfo() << url;
+       request = QNetworkRequest(QUrl(url));
+       // set Header
+       request.setRawHeader("content-type", "application/x-www-form-urlencoded; charset=UTF-8");
+       request.setRawHeader("user-agent", "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0");
+       request.setRawHeader("chost", "leekwars.com");
+       request.setRawHeader("accept", "*/*");
+       request.setRawHeader("origin", "https://leekwars.com");
+       request.setRawHeader("sec-fetch-dest", "empty");
+       request.setRawHeader("sec-fetch-mode", "cors");
+       request.setRawHeader("sec-fetch-site", "same-origin");
+       //request.setRawHeader("referer", "https://leekwars.com/api/garden/start-solo-fight");
+       QString data = "target_id=" + QString::number(OpponentId);      // set Data
+       qInfo() << "before request post";
+       rep = QNAMwrapper::getQNAM()->post(request, data.toLatin1());
+       eventLoop.exec();
+       qInfo() << "after request post";
+       // Result
+       QByteArray jsonFight = rep->readAll();
+       qInfo() << jsonFight;
+       int fightId = QJsonDocument::fromJson(jsonFight).object().find("fight")->toInt();
+       qInfo() << fightId;
+       // Show Result in other window
+
+       qInfo() << "Fight Stop";
+   }
+
+   // Update page
+   this->updateView();
+
 }
 
 void MainWindow:: on_pushButton_All_Team_clicked() {

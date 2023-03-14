@@ -42,11 +42,6 @@ void ConnectionWindow::on_pushButton_Login_clicked()
     QString username = ui->lineEdit_username->text();
     QString password = ui->lineEdit_password->text();
 
-    if (username.isEmpty()) {
-        username = "Juju2639";
-        password = "Naxu7582?";
-    }
-
     // Request
     url = QUrl("https://leekwars.com/api/farmer/login");                                        // set url
     QNetworkRequest request(url);                                                               // On crée notre requête
