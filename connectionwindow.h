@@ -6,14 +6,14 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 #include <QUrl>
-#include <QMainWindow>
+#include <QDialog>
 #include "mainwindow.h"
 
 namespace Ui {
 class ConnectionWindow;
 }
 
-class ConnectionWindow : public QMainWindow
+class ConnectionWindow : public QDialog
 {
     Q_OBJECT
 
