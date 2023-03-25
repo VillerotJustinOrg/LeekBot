@@ -101,7 +101,7 @@ void DetailedFight:: SetData(){
         ui->tableWidget_User->removeColumn(5);
     }
 
-    foreach (QJsonValueConstRef leek, Group1) {
+    foreach (const QJsonValue & leek, Group1) {
         QJsonObject leekOBJ = leek.toObject();
         // create row
         ui->tableWidget_User->insertRow(ui->tableWidget_User->rowCount());
@@ -139,7 +139,7 @@ void DetailedFight:: SetData(){
 
     qInfo() << "Group1 set";
 
-    foreach (QJsonValueConstRef leek, Group2) {
+    foreach (const QJsonValue & leek, Group2) {
         QJsonObject leekOBJ = leek.toObject();
         ui->tableWidget_Enemy->insertRow(ui->tableWidget_Enemy->rowCount());
         // create items

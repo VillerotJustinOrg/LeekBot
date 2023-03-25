@@ -38,26 +38,26 @@ MainWindow::~MainWindow()
 void MainWindow:: SetData() {
 
     // set User Info
-    this->userId = this->userdata.find("id").value().toInteger();
+    this->userId = this->userdata.find("id").value().toInt();
 
     ui->label_Username->setText(this->userdata.find("name").value().toString());
     //qInfo() << this->userdata.find("name").value();
 
-    QString temp = QString::number(this->userdata.find("fights").value().toInteger());
+    QString temp = QString::number(this->userdata.find("fights").value().toInt());
     //qInfo() << this->userdata.find("fights").value();
     ui->label_Fights->setText(temp);
 
-    temp = QString::number(this->userdata.find("talent").value().toInteger()) +"("+QString::number(this->userdata.find("talent_more").value().toInteger())+")";
+    temp = QString::number(this->userdata.find("talent").value().toInt()) +"("+QString::number(this->userdata.find("talent_more").value().toInt())+")";
     //qInfo() << this->userdata.find("talent").value();
     ui->label_Talent->setText(temp);
 
-    temp = QString::number(this->userdata.find("crystals").value().toInteger());
+    temp = QString::number(this->userdata.find("crystals").value().toInt());
     for(int i=temp.length()-3;i>0;i-=3)
         temp.insert(i,' ');
     //qInfo() << this->userdata.find("crystals").value();
     ui->label_Crystals->setText(temp);
 
-    temp = QString::number(this->userdata.find("habs").value().toInteger());
+    temp = QString::number(this->userdata.find("habs").value().toInt());
     for(int i=temp.length()-3;i>0;i-=3)
         temp.insert(i,' ');
     //qInfo() << this->userdata.find("habs").value();
@@ -76,7 +76,7 @@ void MainWindow:: SetData() {
    //qInfo() << "Update View - Form1";
 
     // get teamID
-    this->teamID = this->userdata.find("team")->toObject().find("id").value().toInteger();
+    this->teamID = this->userdata.find("team")->toObject().find("id").value().toInt();
 
     // get Team Object
     QEventLoop eventLoop;
@@ -100,17 +100,17 @@ void MainWindow:: SetData() {
     ui->label_Team->setText(this->team->find("name").value().toString());
     //qInfo() << "Team Name";
 
-    temp = QString::number(this->team->find("talent").value().toInteger());
+    temp = QString::number(this->team->find("talent").value().toInt());
     ui->label_Talent_Team->setText(temp);
     //qInfo() << "Team talent";
 
-    temp = QString::number(this->team->find("level").value().toInteger());
+    temp = QString::number(this->team->find("level").value().toInt());
     ui->label_Team_Level->setText(temp);
     //qInfo() << "Team level";
 
-    qint64 upXP = this->team->find("up_xp").value().toInteger();
-    qint64 downXP = this->team->find("down_xp").value().toInteger();
-    qint64 XP = this->team->find("xp").value().toInteger();
+    qint64 upXP = this->team->find("up_xp").value().toInt();
+    qint64 downXP = this->team->find("down_xp").value().toInt();
+    qint64 XP = this->team->find("xp").value().toInt();
 
     ui->XP_progressBar->setMaximum(upXP);
     ui->XP_progressBar->setMinimum(downXP);
@@ -123,7 +123,7 @@ void MainWindow:: SetData() {
     this->NBLeek = this->userdata.find("leek_count").value().toInt();
     ui->label_NB_Leek->setText(QString::number(this->NBLeek));
     // Total Level Leek total_level
-    ui->label_Total_Level_Leek->setText(QString::number(this->userdata.find("total_level").value().toInteger()));
+    ui->label_Total_Level_Leek->setText(QString::number(this->userdata.find("total_level").value().toInt()));
 
     QJsonObject leeks = this->userdata.find("leeks")->toObject();
     int ct = 0;
@@ -133,7 +133,7 @@ void MainWindow:: SetData() {
         //qInfo() << "In Loop";
         QEventLoop eventLoop;
         QObject::connect(QNAMwrapper::getQNAM(), SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
-        temp = QString::number(leeks.find(leek)->toObject().find("id")->toInteger());
+        temp = QString::number(leeks.find(leek)->toObject().find("id")->toInt());
         //qInfo() << leek;
         //qInfo() << temp;
         url = QUrl("https://leekwars.com/api/leek/get/"+temp);
@@ -148,14 +148,14 @@ void MainWindow:: SetData() {
             ui->label_Leek_Name->setText(this->leek1->find("name").value().toString());
             //qInfo() << this->leek1->find("name").value();
             //label_Leek_Name name
-            temp = QString::number(this->leek1->find("talent").value().toInteger()) + "("+QString::number(this->leek1->find("talent_more").value().toInteger())+")" ;
+            temp = QString::number(this->leek1->find("talent").value().toInt()) + "("+QString::number(this->leek1->find("talent_more").value().toInt())+")" ;
             ui->label_Leek_Talent->setText(temp);
             //label_Leek_Talent talent talent_more
-            ui->label_Leek_Level->setText(QString::number(this->leek1->find("level").value().toInteger()));
+            ui->label_Leek_Level->setText(QString::number(this->leek1->find("level").value().toInt()));
             //label_Leek_Level level
-            upXP    = this->leek1->find("up_xp").value().toInteger();
-            downXP  = this->leek1->find("down_xp").value().toInteger();
-            XP      = this->leek1->find("xp").value().toInteger();
+            upXP    = this->leek1->find("up_xp").value().toInt();
+            downXP  = this->leek1->find("down_xp").value().toInt();
+            XP      = this->leek1->find("xp").value().toInt();
 
             ui->XP_progressBar_Leek->setMaximum(upXP);
             ui->XP_progressBar_Leek->setMinimum(downXP);
@@ -169,14 +169,14 @@ void MainWindow:: SetData() {
             ui->label_Leek_Name_2->setText(this->leek2->find("name").value().toString());
             //qInfo() << this->leek2->find("name").value();
             //label_Leek_Name name
-            temp = QString::number(this->leek2->find("talent").value().toInteger()) + "("+QString::number(this->leek2->find("talent_more").value().toInteger())+")" ;
+            temp = QString::number(this->leek2->find("talent").value().toInt()) + "("+QString::number(this->leek2->find("talent_more").value().toInt())+")" ;
             ui->label_Leek_Talent_2->setText(temp);
             //label_Leek_Talent talent talent_more
-            ui->label_Leek_Level_2->setText(QString::number(this->leek2->find("level").value().toInteger()));
+            ui->label_Leek_Level_2->setText(QString::number(this->leek2->find("level").value().toInt()));
             //label_Leek_Level level
-            upXP    = this->leek2->find("up_xp").value().toInteger();
-            downXP  = this->leek2->find("down_xp").value().toInteger();
-            XP      = this->leek2->find("xp").value().toInteger();
+            upXP    = this->leek2->find("up_xp").value().toInt();
+            downXP  = this->leek2->find("down_xp").value().toInt();
+            XP      = this->leek2->find("xp").value().toInt();
 
             ui->XP_progressBar_Leek_2->setMaximum(upXP);
             ui->XP_progressBar_Leek_2->setMinimum(downXP);
@@ -190,14 +190,14 @@ void MainWindow:: SetData() {
             ui->label_Leek_Name_3->setText(this->leek3->find("name").value().toString());
             //qInfo() << this->leek3->find("name").value();
             //label_Leek_Name name
-            temp = QString::number(this->leek3->find("talent").value().toInteger()) + "("+QString::number(this->leek3->find("talent_more").value().toInteger())+")" ;
+            temp = QString::number(this->leek3->find("talent").value().toInt()) + "("+QString::number(this->leek3->find("talent_more").value().toInt())+")" ;
             ui->label_Leek_Talent_3->setText(temp);
             //label_Leek_Talent talent talent_more
-            ui->label_Leek_Level_3->setText(QString::number(this->leek3->find("level").value().toInteger()));
+            ui->label_Leek_Level_3->setText(QString::number(this->leek3->find("level").value().toInt()));
             //label_Leek_Level level
-            upXP    = this->leek3->find("up_xp").value().toInteger();
-            downXP  = this->leek3->find("down_xp").value().toInteger();
-            XP      = this->leek3->find("xp").value().toInteger();
+            upXP    = this->leek3->find("up_xp").value().toInt();
+            downXP  = this->leek3->find("down_xp").value().toInt();
+            XP      = this->leek3->find("xp").value().toInt();
 
             ui->XP_progressBar_Leek_3->setMaximum(upXP);
             ui->XP_progressBar_Leek_3->setMinimum(downXP);
@@ -211,14 +211,14 @@ void MainWindow:: SetData() {
             ui->label_Leek_Name_4->setText(this->leek4->find("name").value().toString());
             //qInfo() << this->leek4->find("name").value();
             //label_Leek_Name name
-            temp = QString::number(this->leek4->find("talent").value().toInteger()) + "("+QString::number(this->leek4->find("talent_more").value().toInteger())+")" ;
+            temp = QString::number(this->leek4->find("talent").value().toInt()) + "("+QString::number(this->leek4->find("talent_more").value().toInt())+")" ;
             ui->label_Leek_Talent_4->setText(temp);
             //label_Leek_Talent talent talent_more
-            ui->label_Leek_Level_4->setText(QString::number(this->leek4->find("level").value().toInteger()));
+            ui->label_Leek_Level_4->setText(QString::number(this->leek4->find("level").value().toInt()));
             //label_Leek_Level level
-            upXP    = this->leek4->find("up_xp").value().toInteger();
-            downXP  = this->leek4->find("down_xp").value().toInteger();
-            XP      = this->leek4->find("xp").value().toInteger();
+            upXP    = this->leek4->find("up_xp").value().toInt();
+            downXP  = this->leek4->find("down_xp").value().toInt();
+            XP      = this->leek4->find("xp").value().toInt();
 
             ui->XP_progressBar_Leek_4->setMaximum(upXP);
             ui->XP_progressBar_Leek_4->setMinimum(downXP);
@@ -244,7 +244,7 @@ void MainWindow:: SetData() {
     QJsonArray compos = QJsonDocument::fromJson(jsonCompo).object().find("garden")->toObject().find("my_compositions")->toArray();
     qInfo() << compos;
     qInfo() << "Update View - Team Combobox - array done";
-    foreach (QJsonValueConstRef compo, compos) {
+    foreach (const QJsonValue & compo, compos) {
         qInfo() << compo;
         ui->comboBox_Fight_Team->addItem(compo.toObject().find("name").value().toString()+" ("+QString::number(compo.toObject().find("fights").value().toInt())+")");
         this->CompoIdList.append(compo.toObject().find("id").value().toInt());
@@ -285,22 +285,22 @@ void MainWindow:: updateView() {
     //qInfo() << "User get";
 
 
-    temp = QString::number(this->userdata.find("fights").value().toInteger());
+    temp = QString::number(this->userdata.find("fights").value().toInt());
     //qInfo() << this->userdata.find("fights").value();
     ui->label_Fights->setText(temp);
 
-    temp = QString::number(this->userdata.find("talent").value().toInteger()) +"("+QString::number(this->userdata.find("talent_more").value().toInteger())+")";
+    temp = QString::number(this->userdata.find("talent").value().toInt()) +"("+QString::number(this->userdata.find("talent_more").value().toInt())+")";
     //qInfo() << this->userdata.find("talent").value();
     ui->label_Talent->setText(temp);
 
     /* Need An other get
-    temp = QString::number(this->userdata.find("crystals").value().toInteger());
+    temp = QString::number(this->userdata.find("crystals").value().toInt());
     for(int i=temp.length()-3;i>0;i-=3)
         temp.insert(i,' ');
     //qInfo() << this->userdata.find("crystals").value();
     ui->label_Crystals->setText(temp);
 
-    temp = QString::number(this->userdata.find("habs").value().toInteger());
+    temp = QString::number(this->userdata.find("habs").value().toInt());
     for(int i=temp.length()-3;i>0;i-=3)
         temp.insert(i,' ');
     //qInfo() << this->userdata.find("habs").value();
@@ -338,17 +338,17 @@ void MainWindow:: updateView() {
     this->team = new QJsonObject(jsonTeamDocument.object());
     //qInfo() << "json -> object done";
 
-    temp = QString::number(this->team->find("talent").value().toInteger());
+    temp = QString::number(this->team->find("talent").value().toInt());
     ui->label_Talent_Team->setText(temp);
     //qInfo() << "Team talent";
 
-    temp = QString::number(this->team->find("level").value().toInteger());
+    temp = QString::number(this->team->find("level").value().toInt());
     ui->label_Team_Level->setText(temp);
     //qInfo() << "Team level";
 
-    qint64 upXP = this->team->find("up_xp").value().toInteger();
-    qint64 downXP = this->team->find("down_xp").value().toInteger();
-    qint64 XP = this->team->find("xp").value().toInteger();
+    qint64 upXP = this->team->find("up_xp").value().toInt();
+    qint64 downXP = this->team->find("down_xp").value().toInt();
+    qint64 XP = this->team->find("xp").value().toInt();
 
     ui->XP_progressBar->setMaximum(upXP);
     ui->XP_progressBar->setMinimum(downXP);
@@ -362,7 +362,7 @@ void MainWindow:: updateView() {
     this->NBLeek = this->userdata.find("leek_count").value().toInt();
     ui->label_NB_Leek->setText(QString::number(this->NBLeek));
     // Total Level Leek total_level
-    ui->label_Total_Level_Leek->setText(QString::number(this->userdata.find("total_level").value().toInteger()));
+    ui->label_Total_Level_Leek->setText(QString::number(this->userdata.find("total_level").value().toInt()));
 
     QJsonObject leeks = this->userdata.find("leeks")->toObject();
     int ct = 0;
@@ -372,7 +372,7 @@ void MainWindow:: updateView() {
         //qInfo() << "In Loop";
         QEventLoop eventLoop;
         QObject::connect(QNAMwrapper::getQNAM(), SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
-        temp = QString::number(leeks.find(leek)->toObject().find("id")->toInteger());
+        temp = QString::number(leeks.find(leek)->toObject().find("id")->toInt());
         //qInfo() << leek;
         //qInfo() << temp;
         url = QUrl("https://leekwars.com/api/leek/get/"+temp);
@@ -394,15 +394,15 @@ void MainWindow:: updateView() {
             this -> leek1 = new QJsonObject(QJsonDocument::fromJson(jsonLeek).object());
 
 
-            temp = QString::number(this->leek1->find("talent").value().toInteger()) + "("+QString::number(this->leek1->find("talent_more").value().toInteger())+")" ;
+            temp = QString::number(this->leek1->find("talent").value().toInt()) + "("+QString::number(this->leek1->find("talent_more").value().toInt())+")" ;
             ui->label_Leek_Talent->setText(temp);
             //label_Leek_Talent talent talent_more
 
-            ui->label_Leek_Level->setText(QString::number(this->leek1->find("level").value().toInteger()));
+            ui->label_Leek_Level->setText(QString::number(this->leek1->find("level").value().toInt()));
             //label_Leek_Level level
-            upXP    = this->leek1->find("up_xp").value().toInteger();
-            downXP  = this->leek1->find("down_xp").value().toInteger();
-            XP      = this->leek1->find("xp").value().toInteger();
+            upXP    = this->leek1->find("up_xp").value().toInt();
+            downXP  = this->leek1->find("down_xp").value().toInt();
+            XP      = this->leek1->find("xp").value().toInt();
 
             ui->XP_progressBar_Leek->setMaximum(upXP);
             ui->XP_progressBar_Leek->setMinimum(downXP);
@@ -413,14 +413,14 @@ void MainWindow:: updateView() {
         if (ct == 1) {
             this -> leek2 = new QJsonObject(QJsonDocument::fromJson(jsonLeek).object());
 
-            temp = QString::number(this->leek2->find("talent").value().toInteger()) + "("+QString::number(this->leek2->find("talent_more").value().toInteger())+")" ;
+            temp = QString::number(this->leek2->find("talent").value().toInt()) + "("+QString::number(this->leek2->find("talent_more").value().toInt())+")" ;
             ui->label_Leek_Talent_2->setText(temp);
             //label_Leek_Talent talent talent_more
-            ui->label_Leek_Level_2->setText(QString::number(this->leek2->find("level").value().toInteger()));
+            ui->label_Leek_Level_2->setText(QString::number(this->leek2->find("level").value().toInt()));
             //label_Leek_Level level
-            upXP    = this->leek2->find("up_xp").value().toInteger();
-            downXP  = this->leek2->find("down_xp").value().toInteger();
-            XP      = this->leek2->find("xp").value().toInteger();
+            upXP    = this->leek2->find("up_xp").value().toInt();
+            downXP  = this->leek2->find("down_xp").value().toInt();
+            XP      = this->leek2->find("xp").value().toInt();
 
             ui->XP_progressBar_Leek_2->setMaximum(upXP);
             ui->XP_progressBar_Leek_2->setMinimum(downXP);
@@ -430,14 +430,14 @@ void MainWindow:: updateView() {
         if (ct == 2) {
             this -> leek3 = new QJsonObject(QJsonDocument::fromJson(jsonLeek).object());
 
-            temp = QString::number(this->leek3->find("talent").value().toInteger()) + "("+QString::number(this->leek3->find("talent_more").value().toInteger())+")" ;
+            temp = QString::number(this->leek3->find("talent").value().toInt()) + "("+QString::number(this->leek3->find("talent_more").value().toInt())+")" ;
             ui->label_Leek_Talent_3->setText(temp);
             //label_Leek_Talent talent talent_more
-            ui->label_Leek_Level_3->setText(QString::number(this->leek3->find("level").value().toInteger()));
+            ui->label_Leek_Level_3->setText(QString::number(this->leek3->find("level").value().toInt()));
             //label_Leek_Level level
-            upXP    = this->leek3->find("up_xp").value().toInteger();
-            downXP  = this->leek3->find("down_xp").value().toInteger();
-            XP      = this->leek3->find("xp").value().toInteger();
+            upXP    = this->leek3->find("up_xp").value().toInt();
+            downXP  = this->leek3->find("down_xp").value().toInt();
+            XP      = this->leek3->find("xp").value().toInt();
 
             ui->XP_progressBar_Leek_3->setMaximum(upXP);
             ui->XP_progressBar_Leek_3->setMinimum(downXP);
@@ -447,14 +447,14 @@ void MainWindow:: updateView() {
         if (ct == 3) {
             this -> leek4 = new QJsonObject(QJsonDocument::fromJson(jsonLeek).object());
 
-            temp = QString::number(this->leek4->find("talent").value().toInteger()) + "("+QString::number(this->leek4->find("talent_more").value().toInteger())+")" ;
+            temp = QString::number(this->leek4->find("talent").value().toInt()) + "("+QString::number(this->leek4->find("talent_more").value().toInt())+")" ;
             ui->label_Leek_Talent_4->setText(temp);
             //label_Leek_Talent talent talent_more
-            ui->label_Leek_Level_4->setText(QString::number(this->leek4->find("level").value().toInteger()));
+            ui->label_Leek_Level_4->setText(QString::number(this->leek4->find("level").value().toInt()));
             //label_Leek_Level level
-            upXP    = this->leek4->find("up_xp").value().toInteger();
-            downXP  = this->leek4->find("down_xp").value().toInteger();
-            XP      = this->leek4->find("xp").value().toInteger();
+            upXP    = this->leek4->find("up_xp").value().toInt();
+            downXP  = this->leek4->find("down_xp").value().toInt();
+            XP      = this->leek4->find("xp").value().toInt();
 
             ui->XP_progressBar_Leek_4->setMaximum(upXP);
             ui->XP_progressBar_Leek_4->setMinimum(downXP);
@@ -487,7 +487,7 @@ void MainWindow:: updateView() {
     QJsonArray compos = jsonCompoDocument.object().find("garden")->toObject().find("my_compositions")->toArray();
     qInfo() << compos;
     qInfo() << "Update View - Team Combobox - array done";
-    foreach (QJsonValueConstRef compo, compos) {
+    foreach (const QJsonValue &  compo, compos) {
         qInfo() << compo;
         ui->comboBox_Fight_Team->addItem(compo.toObject().find("name").value().toString()+" ("+QString::number(compo.toObject().find("fights").value().toInt())+")");
         //fights talent
@@ -973,7 +973,7 @@ void MainWindow:: on_pushButton_All_Team_clicked() {
     QJsonArray compos = jsonCompoDocument.object().find("garden")->toObject().find("my_compositions")->toArray();
     qInfo() << compos;
     qInfo() << "Get - Compo - array done";
-    foreach (QJsonValueConstRef compo, compos) {
+    foreach (const QJsonValue & compo, compos) {
         qInfo() << compo;
         int numberFight = compo.toObject().find("fights").value().toInt();
         int id = compo.toObject().find("id").value().toInt();
