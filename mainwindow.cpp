@@ -331,7 +331,7 @@ void MainWindow:: updateView() {
     if (this->team->empty()
             || jsonEquipe == "Too Many Requests"
             || !jsonTeamDocument.isObject()) {
-        QMessageBox::information(this, "Team Data", jsonTeamDocument.toJson());
+        QMessageBox::information(this, "Team Data", jsonEquipe);
         return;
     }
 
@@ -385,7 +385,7 @@ void MainWindow:: updateView() {
         if (jsonLeek.isEmpty()
                 || jsonLeek == "Too Many Requests"
                 || !jsonLeekDocument.isObject()) {
-            QMessageBox::information(this, "Leek Data", jsonLeekDocument.toJson());
+            QMessageBox::information(this, "Leek Data", jsonLeek);
             return;
         }
         //qInfo() << jsonLeek;
@@ -480,7 +480,7 @@ void MainWindow:: updateView() {
     if (jsonCompo.isEmpty()
             || jsonCompo == "Too Many Requests"
             || !jsonCompoDocument.isObject()) {
-        QMessageBox::information(this, "Compo Data", jsonCompoDocument.toJson());
+        QMessageBox::information(this, "Compo Data", jsonCompo);
         return;
     }
     qInfo() << "Update View - Team Combobox - request done";
@@ -551,6 +551,12 @@ void MainWindow:: on_pushButton_Fight_Leek_clicked() {
             return;
         }
 
+
+        if (!jsonOpoDocument.object().find(jsonOpoDocument.object().keys().at(0))->isArray()){
+            qInfo() <<  jsonOpponent; qInfo() <<  jsonOpponent;
+            return;
+        }
+
         QJsonArray opponents = jsonOpoDocument.object().find(jsonOpoDocument.object().keys().at(0))->toArray();
 
 
@@ -594,7 +600,7 @@ void MainWindow:: on_pushButton_Fight_Leek_clicked() {
         if (jsonFightDocument.isEmpty()
                 || jsonFight == "Too Many Requests"
                 || !jsonFightDocument.isObject()) {
-            QMessageBox::information(this, "Fight - result", jsonFightDocument.toJson());
+            QMessageBox::information(this, "Fight - result", jsonFight);
             return;
         }
         int fightId = jsonFightDocument.object().find("fight")->toInt();
@@ -660,6 +666,11 @@ void MainWindow:: on_pushButton_Fight_Farmer_clicked() {
             return;
         }
 
+        if (!jsonOpoDocument.object().find(jsonOpoDocument.object().keys().at(0))->isArray()){
+            qInfo() <<  jsonOpponent; qInfo() <<  jsonOpponent;
+            return;
+        }
+
         QJsonArray opponents = jsonOpoDocument.object().find(jsonOpoDocument.object().keys().at(0))->toArray();
         //qInfo() << opponents;
         //qInfo() << opponents.at(0);
@@ -696,7 +707,7 @@ void MainWindow:: on_pushButton_Fight_Farmer_clicked() {
         if (jsonFightDocument.isEmpty()
                 || jsonFight == "Too Many Requests"
                 || !jsonFightDocument.isObject()) {
-            QMessageBox::information(this, "Fight - result", jsonFightDocument.toJson());
+            QMessageBox::information(this, "Fight - result", jsonFight);
             return;
         }
         int fightId = jsonFightDocument.object().find("fight")->toInt();
@@ -764,6 +775,11 @@ void MainWindow:: on_pushButton_Fight_Team_clicked() {
             return;
         }
 
+        if (!jsonOpoDocument.object().find(jsonOpoDocument.object().keys().at(0))->isArray()){
+            qInfo() <<  jsonOpponent; qInfo() <<  jsonOpponent;
+            return;
+        }
+
         QJsonArray opponents = jsonOpoDocument.object().find(jsonOpoDocument.object().keys().at(0))->toArray();
         //qInfo() << opponents;
         //qInfo() << opponents.at(0);
@@ -800,7 +816,7 @@ void MainWindow:: on_pushButton_Fight_Team_clicked() {
         if (jsonFightDocument.isEmpty()
                 || jsonFight == "Too Many Requests"
                 || !jsonFightDocument.isObject()) {
-            QMessageBox::information(this, "Fight - result", jsonFightDocument.toJson());
+            QMessageBox::information(this, "Fight - result", jsonFight);
             return;
         }
         int fightId = jsonFightDocument.object().find("fight")->toInt();
@@ -861,6 +877,11 @@ void MainWindow:: on_pushButton_All_Farmer_clicked() {
            return;
        }
 
+       if (!jsonOpoDocument.object().find(jsonOpoDocument.object().keys().at(0))->isArray()){
+           qInfo() <<  jsonOpponent; qInfo() <<  jsonOpponent;
+           return;
+       }
+
        QJsonArray opponents = jsonOpoDocument.object().find(jsonOpoDocument.object().keys().at(0))->toArray();
        //qInfo() << opponents;
        //qInfo() << opponents.at(0);
@@ -897,7 +918,7 @@ void MainWindow:: on_pushButton_All_Farmer_clicked() {
        if (jsonFightDocument.isEmpty()
                || jsonFight == "Too Many Requests"
                || !jsonFightDocument.isObject()) {
-           QMessageBox::information(this, "Fight - result", jsonFightDocument.toJson());
+           QMessageBox::information(this, "Fight - result", jsonFight);
            return;
        }
        int fightId = jsonFightDocument.object().find("fight")->toInt();
@@ -939,8 +960,17 @@ void MainWindow:: on_pushButton_All_Team_clicked() {
     qInfo() << "Get - Compo - request";
     QByteArray jsonCompo = repCompo->readAll();
     qInfo() << jsonCompo;
+    QJsonDocument jsonCompoDocument = QJsonDocument::fromJson(jsonCompo);
+
+    if (jsonCompoDocument.isEmpty()
+            || jsonCompo == "Too Many Requests"
+            || !jsonCompoDocument.isObject()) {
+        QMessageBox::information(this, "Fight - get opponent", jsonCompo);
+        qInfo() <<  jsonCompo;
+        return;
+    }
     qInfo() << "Get - Compo - request done";
-    QJsonArray compos = QJsonDocument::fromJson(jsonCompo).object().find("garden")->toObject().find("my_compositions")->toArray();
+    QJsonArray compos = jsonCompoDocument.object().find("garden")->toObject().find("my_compositions")->toArray();
     qInfo() << compos;
     qInfo() << "Get - Compo - array done";
     foreach (QJsonValueConstRef compo, compos) {
@@ -963,6 +993,10 @@ void MainWindow:: on_pushButton_All_Team_clicked() {
                     || jsonOpponent == "Too Many Requests"
                     || !jsonOpoDocument.isObject()) {
                 QMessageBox::information(this, "Fight - get opponent", jsonOpponent);
+                qInfo() <<  jsonOpponent; qInfo() <<  jsonOpponent;
+                return;
+            }
+            if (!jsonOpoDocument.object().find(jsonOpoDocument.object().keys().at(0))->isArray()){
                 qInfo() <<  jsonOpponent; qInfo() <<  jsonOpponent;
                 return;
             }
@@ -1004,7 +1038,7 @@ void MainWindow:: on_pushButton_All_Team_clicked() {
             if (jsonFightDocument.isEmpty()
                     || jsonFight == "Too Many Requests"
                     || !jsonFightDocument.isObject()) {
-                QMessageBox::information(this, "Fight - result", jsonFightDocument.toJson());
+                QMessageBox::information(this, "Fight - result", jsonFight);
                 return;
             }
             int fightId = jsonFightDocument.object().find("fight")->toInt();
